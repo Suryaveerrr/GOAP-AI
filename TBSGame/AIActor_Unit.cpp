@@ -192,7 +192,20 @@ void AIActor_Unit::InitPathfinding()
 
 
 	//TASK TODO - Add below any non-walkable map tiles using mapGridGraph.SetWalkable()
+		// the Shop covers x 6-8, y 1-3
+	for (int x = 6; x <= 8; x++)
+	{
+		for (int y = 1; y <= 3; y++)
+		{
+			mapGridGraph.SetWalkable(x, y, false);
+		}
+	}
 
+	// crates
+	mapGridGraph.SetWalkable(1, 4, false);
+	mapGridGraph.SetWalkable(2, 4, false);
+	mapGridGraph.SetWalkable(14, 2, false);
+	mapGridGraph.SetWalkable(16, 2, false);
 
 	
 }

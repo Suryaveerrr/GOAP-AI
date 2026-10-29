@@ -252,6 +252,14 @@ void AIConstructor_GOAP::DefineActions()
 		// Link the function to an identifier
 		AddActionByName("ActionCollectMushrooms", aCollectMushrooms, 4);
 
+		auto aStealPotion = [](AIBrainBlackboardBase& bb) -> ActionStatus {
+			AIActor_Unit* actor = static_cast<AIActor_Unit*>(bb.GetActorContext());
+
+			return actor->StealPotion();
+			};
+
+		AddActionByName("ActionStealPotion", aStealPotion, 1);
+
 		
 
 }
@@ -662,6 +670,8 @@ void AIConstructor_GOAP::DefineOptions()
 	AddOptionByName("OptionCraftPotion", "ActionCraftPotion");
 	AddOptionByName("OptionDrinkPotion", "ActionDrinkPotion");
 
+	AddOptionByName("OptionStealPotion", "ActionStealPotion");
+
 
 
 	// TASK TODO - add Considerations to Options by calling 'AddOptionConsideration()'
@@ -709,6 +719,8 @@ void AIConstructor_GOAP::DefineOptions()
 	AddOptionConsideration("OptionFindCommander", "ConsiderationHasHighHealth");
 	AddOptionConsideration("OptionFindCommander", "ConsiderationHasSword");
 		
+	AddOptionConsideration("OptionStealPotion", "ConsiderationAtStore");
+	AddOptionConsideration("OptionStealPotion", "ConsiderationNOTHasStolen");
 
 	
 
