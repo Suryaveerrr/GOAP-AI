@@ -248,45 +248,47 @@ void GOAP_Reasoner::GOAPPlanner()
 
 			std::cout << "GOAP: AI Actor has found a plan, cost is " << _current->g << std::endl;
 
-			 /*TASK TODO - populate thePlan with all nodes from the current node back to the root
-			 
-			 _current starts as the Current Node
-			 _current->option will get the Option selected for the current Node
-			 each Node contains a unique 'id'
-			  the Root node has id 0
-			 _current->parentID will get the Parent ID of the current Node
-			 
-			 A* maintains two lists, 'open' and 'closed'
-			 These are class variables for GOAP_Reasoner
+			// walk back from the goal node to the root, collecting each node's option
+			GOAPNode* _node = _current;
 
-			 thePlan is a std::vector that should be populated with Options
+			while (_node != nullptr && _node->id != 0)
+			{
+				thePlan.push_back(_node->option);
 
-			 You may find it useful to log each node you add to the plan to the console for clarity
-			 .e.g. 
-		
+				// find the parent node in the closed list (or open list as a fallback)
+				GOAPNode* _parent = nullptr;
 
+				for (auto& n : closed)
+				{
+					if (n.id == _node->parentID)
+					{
+						_parent = &n;
+						break;
+					}
+				}
 
+				if (_parent == nullptr)
+				{
+					for (auto& n : open)
+					{
+						if (n.id == _node->parentID)
+						{
+							_parent = &n;
+							break;
+						}
+					}
+				}
 
+				_node = _parent;
+			}
 
+			// the plan was collected goal-to-start, so reverse it into execution order
+			std::reverse(thePlan.begin(), thePlan.end());
 
-			 PseudoCode
-
-			 DO
-			 
-				 Add Current Node's option to the Plan
-				 IF Current Node's parent is found the Open list	
-						update Current Node to be the parent node from the Open list
-				 IF Current Node's parent is found the Closed list	
-						update Current Node to be the parent node from the Closed list
-
-			 WHILE Current Node's Parent is NOT 0
- 
- 
-			 Add Current Node's option to the Plan
-
-
-
-			 */
+			for (auto* o : thePlan)
+			{
+				std::cout << " - Plan Option = " << o->GetOptionID() << std::endl;
+			}
 
 
 	

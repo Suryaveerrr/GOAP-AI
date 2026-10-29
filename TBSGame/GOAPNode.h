@@ -63,7 +63,16 @@ struct WorldState {
 
         int result = 0;
 
-      
+        // score 1 for every goal key where this state differs (or lacks the key)
+        for (auto& goalKey : _goalState.state)
+        {
+            auto it = state.find(goalKey.first);
+
+            if (it == state.end() || it->second != goalKey.second)
+            {
+                result++;
+            }
+        }
 
         return result;
     }
